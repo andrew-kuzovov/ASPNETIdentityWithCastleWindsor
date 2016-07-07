@@ -77,37 +77,37 @@ namespace WebApp
 
 		private static ApplicationUserManager CreateCustomUserManager(
 			IUserStore<WebAppUser> store,
-			IAppBuilder appBuilder) 
-        {
-            var manager = new ApplicationUserManager(store);
+			IAppBuilder appBuilder)
+		{
+			var manager = new ApplicationUserManager(store);
 
-            manager.UserValidator = new UserValidator<WebAppUser>(manager)
-            {
-                AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = true				
-            };
+			manager.UserValidator = new UserValidator<WebAppUser>(manager)
+			{
+				AllowOnlyAlphanumericUserNames = true,
+				RequireUniqueEmail = true
+			};
 
-            manager.PasswordValidator = new PasswordValidator
-            {
-                RequiredLength = Common.Constants.MinimumUserPasswordLength,
+			manager.PasswordValidator = new PasswordValidator
+			{
+				RequiredLength = Common.Constants.MinimumUserPasswordLength,
 				RequireNonLetterOrDigit = false,
 				RequireDigit = false,
 				RequireLowercase = false,
 				RequireUppercase = false
 			};
 
-            manager.UserLockoutEnabledByDefault = true;
-            manager.DefaultAccountLockoutTimeSpan = Common.Constants.AccountLockoutTimeSpan;
-            manager.MaxFailedAccessAttemptsBeforeLockout = Common.Constants.MaxFailedAccessAttemptsBeforeLockout;
+			manager.UserLockoutEnabledByDefault = true;
+			manager.DefaultAccountLockoutTimeSpan = Common.Constants.AccountLockoutTimeSpan;
+			manager.MaxFailedAccessAttemptsBeforeLockout = Common.Constants.MaxFailedAccessAttemptsBeforeLockout;
 
 			var dataProtectionProvider = appBuilder.GetDataProtectionProvider();
 			if (dataProtectionProvider != null)
-            {
+			{
 				var dataProtector = dataProtectionProvider.Create("ASP.NET Identity");
 				manager.UserTokenProvider = new DataProtectorTokenProvider<WebAppUser>(dataProtector);
-            }
+			}
 
 			return manager;
-        }
+		}
 	}
 }
